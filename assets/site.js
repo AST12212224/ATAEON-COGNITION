@@ -13,7 +13,7 @@
     <div id="glow" aria-hidden="true"></div><div id="prog" aria-hidden="true"></div>
     <nav id="nav"><div class="wrap">
       <a href="index.html" class="logo" data-logo="nav" aria-label="ATAEON Cognition home"></a>
-      <div class="links" id="links">${nav.map(([k, l]) => `<a href="${k}.html" class="${k === page ? 'active' : ''}">${l}</a>`).join('')}</div>
+      <div class="links" id="links">${nav.map(([k, l]) => `<a href="${k}.html" class="${k === page ? 'active' : ''}">${l}</a>`).join('')}<a href="company.html#contact" class="only-m">Talk to us →</a></div>
       <a href="company.html#contact" class="btn btn-p nav-cta mag">Talk to us →</a>
       <button class="menu" id="menu" aria-label="Open menu">☰</button>
     </div></nav>`);
@@ -101,7 +101,9 @@
   });
 
   /* ---------- nav, menu, progress ---------- */
-  $('#menu').onclick = () => $('#links').classList.toggle('open');
+  const menu = $('#menu'), links = $('#links');
+  menu.onclick = () => { const o = links.classList.toggle('open'); menu.textContent = o ? '✕' : '☰'; menu.setAttribute('aria-expanded', o); };
+  links.addEventListener('click', e => { if (e.target.closest('a')) { links.classList.remove('open'); menu.textContent = '☰'; } });
   function onScroll() {
     const h = document.documentElement.scrollHeight - innerHeight;
     $('#prog').style.transform = `scaleX(${h > 0 ? scrollY / h : 0})`;
@@ -164,19 +166,32 @@
   });
 
   /* ---------- before / after slider ---------- */
+  // Desktop: drag the handle. Phone: tap "today" / "with labourvala" (dragging would block page scrolling).
+  const phone = matchMedia('(max-width: 680px)');
   $$('.ba').forEach(ba => {
     const r = $('input', ba), set = v => ba.style.setProperty('--p', v + '%');
-    r.addEventListener('input', () => { set(r.value); r.dataset.touched = 1; });
+    const labels = ba.nextElementSibling && ba.nextElementSibling.classList.contains('ba-labels') ? ba.nextElementSibling : null;
+    let btns = [];
+    if (labels) {
+      labels.innerHTML = '<button type="button" data-v="100">← today</button><button type="button" data-v="0">with labourvala →</button>';
+      btns = $$('button', labels);
+    }
+    const mark = v => btns.forEach(b => b.classList.toggle('on', +b.dataset.v === v));
+    const go = v => { r.dataset.touched = 1; ba.classList.add('anim'); set(v); r.value = v; mark(v); setTimeout(() => ba.classList.remove('anim'), 750); };
+    btns.forEach(b => b.addEventListener('click', () => go(+b.dataset.v)));
+    r.addEventListener('input', () => { set(r.value); r.dataset.touched = 1; mark(-1); });
+    if (phone.matches) { set(100); mark(100); }
     if (reduce) return;
     const sw = new IntersectionObserver(([e]) => {
       if (!e.isIntersecting) return; sw.disconnect();
+      if (phone.matches) { setTimeout(() => { if (!r.dataset.touched) go(0); }, 1200); return; }
       const t0 = performance.now();
       (function f(t) {
         if (r.dataset.touched) return;
         const k = (t - t0) / 2600; if (k > 1) { r.value = 50; set(50); return; }
         const v = 50 + Math.sin(k * Math.PI * 2) * 35; r.value = v; set(v); requestAnimationFrame(f);
       })(t0);
-    }, { threshold: .5 });
+    }, { threshold: .4 });
     sw.observe(ba);
   });
 

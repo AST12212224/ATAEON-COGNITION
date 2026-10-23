@@ -70,9 +70,9 @@
     return {
       el, s: shape, core: el.hasAttribute('data-core'),
       x: side === 'right' ? 2.7 : side === 'left' ? -2.9 : 0,
-      y: mobile && el.hasAttribute('data-core') ? 1.6 : (shape === 'wave' ? -.6 : 0),
+      y: shape === 'wave' ? -.6 : 0,
       rx: shape === 'wave' ? .55 : shape === 'lorenz' ? .1 : .3,
-      o: +(el.dataset.o || .45) * (mobile && el.hasAttribute('data-core') ? .75 : 1),
+      o: +(el.dataset.o || .45) * (mobile ? .6 : 1),
       sc: +(el.dataset.sc || (mobile ? .85 : 1))
     };
   };
@@ -113,7 +113,7 @@
   addEventListener('scroll', pick, { passive: true }); pick();
 
   let shock = null;
-  addEventListener('pointerdown', e => { if (e.target.closest('a,button,input,canvas.toy')) return; shock = { x: M.nx, y: M.ny, t: 0 }; });
+  addEventListener('click', e => { if (e.target.closest('a,button,input,canvas.toy,.ba')) return; shock = { x: e.clientX / innerWidth * 2 - 1, y: -(e.clientY / innerHeight * 2 - 1), t: 0 }; });
 
   const v3 = new THREE.Vector3(), dir = new THREE.Vector3(), inv = new THREE.Matrix4();
   const onPlane = (nx, ny) => { v3.set(nx, ny, .5).unproject(camera); dir.copy(v3).sub(camera.position).normalize(); const k = -camera.position.z / dir.z; return [camera.position.x + dir.x * k, camera.position.y + dir.y * k]; };

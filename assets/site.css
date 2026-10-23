@@ -151,10 +151,10 @@ a.card{display:block}
 .pane .it b{display:block;font-size:17px;margin-bottom:2px}
 .pane .it span{color:var(--muted);font-size:14px}
 .pane .it i{flex:none;font-style:normal;width:30px;height:30px;border-radius:9px;display:grid;place-items:center;font-size:14px;font-weight:700}
-.before{background:linear-gradient(135deg,rgba(40,14,20,.92),rgba(20,10,18,.92))}
+.before{background:linear-gradient(135deg,#1f0b11,#130912)}
 .before h3{color:var(--red)}
 .before .it i{background:rgba(248,113,113,.12);color:var(--red);border:1px solid rgba(248,113,113,.3)}
-.after{background:linear-gradient(135deg,rgba(8,30,40,.94),rgba(22,16,48,.94));clip-path:inset(0 0 0 var(--p))}
+.after{background:linear-gradient(135deg,#071a24,#0f1030);clip-path:inset(0 0 0 var(--p))}
 .after h3{color:var(--green)}
 .after .it i{background:rgba(52,211,153,.12);color:var(--green);border:1px solid rgba(52,211,153,.3)}
 .handle{position:absolute;top:0;bottom:0;left:var(--p);width:2px;margin-left:-1px;background:var(--grad);pointer-events:none;box-shadow:0 0 20px rgba(34,211,238,.6)}
@@ -285,4 +285,109 @@ footer{border-top:1px solid var(--line);padding:50px 0 34px;color:var(--dim);fon
   .play canvas{height:280px}
   #core,#core .lg-mark{width:140px;height:140px}
   #core{margin:-70px 0 0 -70px}
+}
+
+/* ================= mobile & touch ================= */
+@property --p{syntax:'<percentage>';inherits:true;initial-value:50%}
+html,body{overflow-x:clip}
+*{-webkit-tap-highlight-color:transparent}
+.hero{min-height:100svh}
+.ba.anim{transition:--p .7s cubic-bezier(.2,.8,.2,1)}
+.ba-labels button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;padding:6px 0}
+.ba-labels button.on{color:var(--cyan)}
+.links .only-m{display:none}
+
+@media (max-width:680px){
+  nav .wrap{height:62px}
+  .logo .lg-mark{width:32px;height:32px}
+  .wm b{font-size:15px}
+  .menu{width:44px;height:44px;display:grid;place-items:center;border:1px solid var(--line2);border-radius:12px;font-size:20px;background:rgba(13,20,38,.6)}
+  .links.open{top:62px;padding:8px 16px 18px;gap:0;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+  .links.open a{padding:14px 2px;border-bottom:1px solid var(--line);font-size:17px;color:var(--text)}
+  .links.open a:after{display:none}
+  .links.open .only-m{display:block;border:0;margin-top:12px;text-align:center;border-radius:12px;background:var(--grad);color:#05111c;font-weight:600}
+
+  /* the floating home logo would sit on top of the headline: the nav logo is enough on phones */
+  #core{display:none}
+
+  .hero{padding:96px 0 48px;min-height:auto}
+  .page-hero{min-height:auto;padding:110px 0 40px}
+  h1{font-size:clamp(36px,11vw,46px);margin:18px 0 18px;letter-spacing:-.04em}
+  h2{font-size:clamp(28px,8.6vw,36px)}
+  h2 br{display:none}
+  .lead{font-size:16.5px}
+  .sub{font-size:16px}
+  .eyebrow{font-size:11.5px}
+  .tag{font-size:12px;padding:6px 12px}
+  .cta{gap:10px;margin-top:26px}
+  .cta .btn{flex:1 1 100%;justify-content:center;padding:14px 18px}
+  .stats{gap:12px;margin-top:34px;display:grid;grid-template-columns:repeat(3,1fr)}
+  .stats b{font-size:17px}
+  .stats span{font-size:11.5px;line-height:1.35;display:block}
+  section{padding:70px 0}
+  .grid{margin-top:34px;gap:14px}
+  .head-row{gap:18px}
+  .head-row .btn{width:100%;justify-content:center}
+  .marquee{padding:14px 0}
+  .track{font-size:12px;gap:32px}
+
+  .card{padding:22px;border-radius:16px}
+  .pillar{min-height:0;padding:26px 22px}
+  .pillar .big{font-size:48px}
+  .ico{width:42px;height:42px;margin-bottom:16px}
+  .num{top:22px;right:22px}
+
+  /* before/after: tap the labels instead of dragging (dragging blocked page scrolling) */
+  .ba{margin-top:30px;border-radius:16px}
+  .ba input{display:none}
+  .handle:after{display:none}
+  .ba-labels{gap:10px}
+  .ba-labels button{flex:1;padding:12px 8px;border:1px solid var(--line2);border-radius:11px;background:rgba(13,20,38,.6);font-size:12.5px}
+  .ba-labels button.on{border-color:var(--cyan);background:rgba(56,189,248,.08)}
+  .pane{padding:24px 20px;gap:18px}
+  .pane .it b{font-size:15.5px}
+  .pane .it span{font-size:13.5px}
+
+  .product{gap:34px}
+  .ptitle{font-size:44px}
+  .feat{gap:12px;margin:22px 0 26px}
+  .feat li{font-size:14.5px}
+  .flow{padding:20px}
+  .node{padding:12px 14px;gap:12px}
+  .node b{font-size:14px}
+  .node span{font-size:12px}
+  .arrow{height:14px;margin-left:30px}
+  .countdown{gap:6px}
+  .countdown b{font-size:19px}
+  .countdown span{font-size:9.5px;letter-spacing:.08em}
+
+  .metrics{grid-template-columns:1fr 1fr;gap:12px}
+  .metric{padding:18px}
+  .metric b{font-size:34px}
+  .metric span{font-size:12.5px}
+  .term pre{font-size:11px;padding:16px;min-height:280px;line-height:1.8}
+  .steps{margin-top:40px;gap:4px}
+  .step{padding:22px 0 0}
+
+  .filters{flex-wrap:nowrap;overflow-x:auto;margin:24px -16px 0;padding:0 16px 6px;scrollbar-width:none}
+  .filters::-webkit-scrollbar{display:none}
+  .filters button{flex:none}
+  .play .ctl{padding:20px;gap:18px}
+  .seg button{padding:10px 6px}
+
+  .timeline{margin-top:34px;padding-left:28px}
+  .tl:before{left:-25px}
+  .tl h3{font-size:17px}
+
+  .founder{padding:18px}
+  .facts div{padding:12px 18px}
+  .contact{padding:50px 20px}
+  .contact h2{font-size:clamp(30px,9vw,40px)}
+  .contact .cta .btn{font-size:13px;word-break:break-all}
+  .logo-xl .lg-mark{width:min(240px,64vw)}
+  .page-hero .logo-xl + .lead{margin-top:24px!important}
+
+  footer{padding:40px 0 28px}
+  .foot{gap:26px}
+  .legal{flex-direction:column}
 }
