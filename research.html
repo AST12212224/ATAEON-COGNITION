@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Research — ATAEON Cognition</title>
+<meta name="description" content="ATAEON Cognition research in mathematics and artificial intelligence: learning theory, optimisation, language AI for Indian languages, matching markets and trust systems.">
+<meta property="og:title" content="Research · ATAEON Cognition">
+<meta property="og:image" content="https://ataeoncognition.com/assets/logo-512.png">
+<meta name="theme-color" content="#05080f">
+<link rel="icon" type="image/png" href="assets/logo-512.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body data-page="research">
+<main>
+<header class="page-hero" data-shape="lorenz" data-side="right" data-o=".9">
+  <div class="wrap" style="width:100%">
+    <div class="hero-in">
+      <span class="tag reveal"><i class="dot"></i> ATAEON Research</span>
+      <h1 class="reveal d1">Research in<br><span class="grad" data-scramble data-words="mathematics|artificial intelligence|optimisation|learning theory">mathematics</span><br>&amp; AI.</h1>
+      <p class="lead reveal d2">We study the mathematics behind intelligent systems and build AI that works for India's languages, markets and people. The shape behind this text is the Lorenz attractor, a classic of chaos theory. Move your cursor through it.</p>
+    </div>
+  </div>
+</header>
+
+<section data-shape="torus" data-o=".4">
+  <div class="wrap">
+    <div class="reveal">
+      <p class="eyebrow">// Research areas</p>
+      <h2>What we're working on.</h2>
+      <p class="sub">Some areas feed our products directly. Others are long-term bets on the mathematics underneath.</p>
+    </div>
+    <div class="filters reveal" data-filter-for="#areas">
+      <button class="on" data-f="all">All</button>
+      <button data-f="Mathematics">∑ Mathematics</button>
+      <button data-f="AI">◇ AI</button>
+      <button data-f="Applied">⇄ Applied</button>
+    </div>
+    <div class="grid g4" id="areas" data-render="research" style="margin-top:28px"></div>
+  </div>
+</section>
+
+<section data-shape="helix" data-side="left" data-o=".35">
+  <div class="wrap">
+    <div class="reveal">
+      <p class="eyebrow">// Playground</p>
+      <h2>Any wave is a sum<br>of <span class="grad">spinning circles</span>.</h2>
+      <p class="sub">Fourier series, live. Add more circles and watch a smooth sum of sines turn into a sharp-cornered wave. The same idea sits under signal processing, image compression and the attention layers of modern AI.</p>
+    </div>
+    <div class="card play reveal">
+      <canvas id="fourier" class="toy" aria-label="Fourier series animation"></canvas>
+      <div class="ctl">
+        <div><label>circles <span id="nOut">5</span></label><input type="range" id="nIn" min="1" max="40" value="5"></div>
+        <div><label>speed <span id="sOut">1.0×</span></label><input type="range" id="sIn" min="1" max="30" value="10"></div>
+        <div class="seg" id="wave">
+          <button class="on" data-w="square">square</button>
+          <button data-w="saw">sawtooth</button>
+          <button data-w="tri">triangle</button>
+        </div>
+        <div class="formula" id="formula"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section data-shape="cube" data-side="right" data-o=".4">
+  <div class="wrap">
+    <div class="reveal">
+      <p class="eyebrow">// Open questions</p>
+      <h2>Questions that keep us up.</h2>
+    </div>
+    <div class="grid g3">
+      <article class="card tilt reveal"><span class="num">Q1</span><div class="ico">⇄</div><h3>Can a marketplace be fair to both sides?</h3><p>How should a platform match workers and hirers so that it is efficient, fair and hard to game?</p></article>
+      <article class="card tilt reveal d1"><span class="num">Q2</span><div class="ico">अ</div><h3>Small models, Indian languages</h3><p>Can compact, efficient models understand Marathi and Hindi as well as giant ones, on a low-cost phone?</p></article>
+      <article class="card tilt reveal d2"><span class="num">Q3</span><div class="ico">★</div><h3>Trust from sparse signals</h3><p>How much can a few ratings really tell us, and how do we give newcomers a fair start?</p></article>
+    </div>
+  </div>
+</section>
+
+<section data-shape="galaxy" data-o=".45">
+  <div class="wrap">
+    <div class="reveal">
+      <p class="eyebrow">// Publications</p>
+      <h2>Papers &amp; notes.</h2>
+    </div>
+    <div class="grid g3" data-render="papers"></div>
+  </div>
+</section>
+
+<section id="collaborate" data-shape="sphere" data-o=".55" data-sc=".85">
+  <div class="wrap">
+    <div class="card contact reveal">
+      <p class="eyebrow">// Collaborate</p>
+      <h2>Think in proofs<br><span class="grad">and prototypes?</span></h2>
+      <p class="sub">We welcome researchers, students and institutions who want to work with us on mathematics and AI.</p>
+      <div class="cta"><a href="mailto:support@ataeoncognition.com?subject=Research%20collaboration" class="btn btn-p mag">Propose a collaboration →</a></div>
+    </div>
+  </div>
+</section>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="assets/data.js"></script>
+<script src="assets/site.js"></script>
+<script src="assets/logo.js"></script>
+<script src="assets/bg3d.js"></script>
+<script>
+/* Fourier series playground */
+(function () {
+  const cv = document.getElementById('fourier'), ctx = cv.getContext('2d');
+  const nIn = document.getElementById('nIn'), sIn = document.getElementById('sIn');
+  const F = {
+    square: { amp: n => n % 2 ? 4 / (n * Math.PI) : 0, f: 'f(t) = 4/π · Σ sin(nt)/n,  n odd' },
+    saw: { amp: n => 2 / (n * Math.PI) * (n % 2 ? 1 : -1), f: 'f(t) = 2/π · Σ (−1)ⁿ⁺¹ sin(nt)/n' },
+    tri: { amp: n => n % 2 ? 8 / (n * n * Math.PI * Math.PI) * (((n - 1) / 2) % 2 ? -1 : 1) : 0, f: 'f(t) = 8/π² · Σ (−1)ᵏ sin(nt)/n²,  n = 2k+1' }
+  };
+  let wave = 'square', t = 0, trail = [], W, H, dpr;
+  const out = () => {
+    document.getElementById('nOut').textContent = nIn.value;
+    document.getElementById('sOut').textContent = (sIn.value / 10).toFixed(1) + '×';
+    document.getElementById('formula').textContent = F[wave].f + `\n\nusing the first ${nIn.value} circle${nIn.value > 1 ? 's' : ''}`;
+  };
+  nIn.oninput = () => { trail = []; out(); }; sIn.oninput = out;
+  document.getElementById('wave').onclick = e => {
+    const b = e.target.closest('button'); if (!b) return;
+    wave = b.dataset.w; trail = [];
+    [...b.parentNode.children].forEach(x => x.classList.toggle('on', x === b)); out();
+  };
+  function size() { dpr = Math.min(devicePixelRatio, 2); W = cv.clientWidth; H = cv.clientHeight; cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); }
+  addEventListener('resize', size); size(); out();
+  let vis = true; new IntersectionObserver(([e]) => vis = e.isIntersecting).observe(cv);
+  (function draw() {
+    requestAnimationFrame(draw);
+    if (!vis) return;
+    ctx.clearRect(0, 0, W, H);
+    const R = Math.min(H * .32, W * .16), cx = Math.max(R * 1.35, W * .22), cy = H / 2, x0 = cx + R * 1.6;
+    let x = cx, y = cy;
+    const n = +nIn.value;
+    for (let k = 1, used = 0; used < n && k < 200; k++) {
+      const a = F[wave].amp(k); if (!a) continue; used++;
+      const r = a * R, px = x, py = y;
+      x += r * Math.cos(k * t); y -= r * Math.sin(k * t);
+      ctx.strokeStyle = `rgba(96,165,250,${.35 - used / n * .25})`; ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.arc(px, py, Math.abs(r), 0, Math.PI * 2); ctx.stroke();
+      ctx.strokeStyle = 'rgba(56,189,248,.9)'; ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(x, y); ctx.stroke();
+    }
+    trail.unshift(y); if (trail.length > W - x0) trail.pop();
+    ctx.strokeStyle = 'rgba(148,163,184,.35)'; ctx.setLineDash([4, 5]);
+    ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x0, y); ctx.stroke(); ctx.setLineDash([]);
+    const g = ctx.createLinearGradient(x0, 0, W, 0); g.addColorStop(0, '#7dd3fc'); g.addColorStop(.5, '#3b82f6'); g.addColorStop(1, 'rgba(99,102,241,0)');
+    ctx.strokeStyle = g; ctx.lineWidth = 2.2; ctx.beginPath();
+    trail.forEach((v, i) => i ? ctx.lineTo(x0 + i, v) : ctx.moveTo(x0, v)); ctx.stroke();
+    ctx.fillStyle = '#e0f2fe'; ctx.beginPath(); ctx.arc(x, y, 3.5, 0, Math.PI * 2); ctx.fill();
+    t += .012 * sIn.value / 10 * 2;
+  })();
+})();
+</script>
+</body>
+</html>
