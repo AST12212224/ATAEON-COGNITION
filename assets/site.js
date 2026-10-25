@@ -12,9 +12,9 @@
     <canvas id="gl" aria-hidden="true"></canvas><div class="vignette" aria-hidden="true"></div>
     <div id="glow" aria-hidden="true"></div><div id="prog" aria-hidden="true"></div>
     <nav id="nav"><div class="wrap">
-      <a href="index.html" class="logo" data-logo="nav" aria-label="ATAEON Cognition home"></a>
-      <div class="links" id="links">${nav.map(([k, l]) => `<a href="${k}.html" class="${k === page ? 'active' : ''}">${l}</a>`).join('')}<a href="company.html#contact" class="only-m">Talk to us →</a></div>
-      <a href="company.html#contact" class="btn btn-p nav-cta mag">Talk to us →</a>
+      <a href="/" class="logo" data-logo="nav" aria-label="ATAEON Cognition home"></a>
+      <div class="links" id="links">${nav.map(([k, l]) => `<a href="/${k}" class="${k === page ? 'active' : ''}">${l}</a>`).join('')}<a href="/company#contact" class="only-m">Talk to us →</a></div>
+      <a href="/company#contact" class="btn btn-p nav-cta mag">Talk to us →</a>
       <button class="menu" id="menu" aria-label="Open menu">☰</button>
     </div></nav>`);
   const main = $('main');
@@ -22,11 +22,11 @@
     <footer><div class="wrap">
       <div class="foot">
         <div>
-          <a href="index.html" class="logo" data-logo="nav" aria-label="ATAEON Cognition home"></a>
+          <a href="/" class="logo" data-logo="nav" aria-label="ATAEON Cognition home"></a>
           <p>Registered office: PN 493, South City, Tisgaon, CIDCO Mahanagar-2, Bajaj Nagar, MIDC Waluj, Chhatrapati Sambhajinagar (Aurangabad), Maharashtra 431136, India.</p>
         </div>
-        <div><h4>Explore</h4><a href="research.html">Research</a><a href="products.html">Products</a><a href="solutions.html">Solutions</a><a href="company.html">Company</a></div>
-        <div><h4>Products</h4><a href="products.html#labourvala">LabourVala</a><a href="https://labourvala.com" target="_blank" rel="noopener">labourvala.com ↗</a><a href="products.html#pipeline">In the lab</a></div>
+        <div><h4>Explore</h4><a href="/research">Research</a><a href="/products">Products</a><a href="/solutions">Solutions</a><a href="/company">Company</a></div>
+        <div><h4>Products</h4><a href="/products#labourvala">LabourVala</a><a href="https://labourvala.com" target="_blank" rel="noopener">labourvala.com ↗</a><a href="/products#pipeline">In the lab</a></div>
         <div><h4>Connect</h4><a href="mailto:support@ataeoncognition.com">support@ataeoncognition.com</a><a href="mailto:support@labourvala.com">support@labourvala.com</a><a href="https://aadesh24.com" target="_blank" rel="noopener">Founder · aadesh24.com ↗</a></div>
       </div>
       <div class="legal">
@@ -86,6 +86,13 @@
     });
   });
 
+  /* ---------- clean addresses: ataeoncognition.com/company instead of /company.html ---------- */
+  // GitHub Pages serves company.html at /company. Locally (python http.server) it doesn't, so add .html back there.
+  const local = /^(localhost|127\.0\.0\.1|\[::1\]|)$/.test(location.hostname);
+  if (!local && /\.html$/.test(location.pathname)) {
+    history.replaceState(null, '', location.pathname.replace(/(index)?\.html$/, '') + location.search + location.hash);
+  }
+
   /* ---------- page transitions ---------- */
   requestAnimationFrame(() => document.body.classList.add('ready'));
   addEventListener('pageshow', () => { document.body.classList.remove('leaving'); document.body.classList.add('ready'); });
@@ -93,8 +100,13 @@
     const a = e.target.closest('a[href]');
     if (!a || e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey || a.target === '_blank') return;
     const url = new URL(a.href, location.href);
-    if (url.origin !== location.origin || !/\.html$|\/$/.test(url.pathname)) return;
-    if (url.pathname === location.pathname) return; // same page anchors scroll normally
+    if (url.origin !== location.origin || /\.(?!html$)[a-z0-9]+$/i.test(url.pathname)) return; // files like .png/.pdf open normally
+    if (local && url.pathname !== '/' && !/\.html$/.test(url.pathname)) url.pathname += '.html';
+    const here = location.pathname.replace(/(index)?\.html$/, '');
+    if (url.pathname.replace(/(index)?\.html$/, '') === here) { // same page: just scroll to the anchor
+      if (url.hash) return;
+      e.preventDefault(); scrollTo({ top: 0, behavior: 'smooth' }); return;
+    }
     e.preventDefault();
     document.body.classList.add('leaving');
     setTimeout(() => location.href = url.href, 230);
